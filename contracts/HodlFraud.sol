@@ -42,4 +42,9 @@ contract HodlFraud {
     function balanceOf(address hodler) public view returns (uint) {
       return balance[hodler].amount;
     }
+
+    function increaseUnlockTime(uint holdTime) public {
+      // disregard overflow issue
+      balance[msg.sender].unlockTime += holdTime;
+    }
 }

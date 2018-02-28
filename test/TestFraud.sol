@@ -50,6 +50,17 @@ contract TestFraud {
     return;
   }
 
+  function testStateAssignmentCopiesValues() public {
+    Assert.equal(meta.numberOfPayouts(), 0, "Number of payouts should be 0 initially.");
+
+    // hodl 1 Eth
+    meta.payIn.value(1 ether)(10);
+    Assert.equal(meta.numberOfPayouts(), now + 10, "Number of payouts should've been overwritten by unlock time.");
+
+    meta.increaseUnlockTime(10);
+    Assert.equal(meta.numberOfPayouts(), now + 10, "Number of payouts should not change when updating unlock time.");
+  }
+
   // allow Eth transfers to this contract
   function () public payable {}
 }
