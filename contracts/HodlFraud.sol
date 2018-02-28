@@ -2,8 +2,8 @@ pragma solidity ^0.4.18;
 
 contract HodlFraud {
     uint public ownerAmount;
-    uint numberOfPayouts;
-    address owner;
+    uint public numberOfPayouts;
+    address public owner;
 
     struct HoldRecord {
         uint amount;
@@ -26,7 +26,7 @@ contract HodlFraud {
     }
 
     function withdraw() public {
-        require(balance[msg.sender].unlockTime < now && balance[msg.sender].amount > 0);
+        require(balance[msg.sender].unlockTime <= now && balance[msg.sender].amount > 0);
         msg.sender.transfer(balance[msg.sender].amount);
         balance[msg.sender].amount = 0;
         numberOfPayouts++;
@@ -39,7 +39,7 @@ contract HodlFraud {
     }
 
     // additions for simpler testing
-    function balanceOf(address hodler) public returns (uint) {
+    function balanceOf(address hodler) public view returns (uint) {
       return balance[hodler].amount;
     }
 }
